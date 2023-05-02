@@ -243,6 +243,44 @@ function DisplayHelp($command) {
     Write-Host $coloredText
 }
 
+function mls() {
+    # $regexColorMap = [ordered]@{
+    #     # Directories
+    #     "^\d{2}/\d{2}/\d{4} \d{2}:\d{2} [A|P]M +<DIR> +.*$"   = "Dodger Blue" # directories
+    #     "^Directory of.*$"                                    = "Deep Sky Blue" # directory header
+
+    #     # Files
+    #     "^\d{2}/\d{2}/\d{4} \d{2}:\d{2} [A|P]M +\d+ +.*\..*$" = "Green" # files
+    #     "^Mode +LastWriteTime +Length +Name"                  = "Yellow" # file header
+    # }
+    # $regexColorMap = [ordered]@{
+    #     # Directories
+    #     "^d.* +.{10} +.{8} +(.*?)$"          = "Steel Blue" # directories
+    #     "^Directory of.*$"                   = "Deep Sky Blue" # directory header
+
+    #     # Files
+    #     "^-.{5} +.{10} +.{8} +(.*?)$"        = "Green" # files
+    #     "^Mode +LastWriteTime +Length +Name" = "Yellow" # file header
+    # } 
+    $regexColorMap = [ordered]@{
+        # Directories
+        "^\d{2}/\d{2}/\d{4} \d{2}:\d{2} [A|P]M +<DIR> +(.*)$"   = "Dodger Blue" # directories
+        "^Directory of.*$"                                      = "Deep Sky Blue" # directory header
+
+        # Files
+        "^\d{2}/\d{2}/\d{4} \d{2}:\d{2} [A|P]M +\d+ +(.*\..*)$" = "Green" # files
+        "^Mode +(.*)$"                                          = "Crimson" # mode column
+        "^LastWriteTime +(.*)$"                                 = "Yellow" # last write time column
+        "^Length +(.*)$"                                        = "Indian Red" # length column
+        "^Name$"                                                = "Ebony" # name column
+    }
+    $text = $(Get-ChildItem) | Out-String
+
+    $colorBuilder = [ColorBuilder]::new($ColorPalette)
+    $coloredText = $colorBuilder.ColorText($text, $regexColorMap)
+    Write-Host $coloredText
+}
+
 function PrintColors() {
     $builder = [ColorBuilder]::new($ColorPalette)
     foreach ($item in $builder.colors.GetEnumerator()) {
