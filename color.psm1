@@ -154,6 +154,7 @@ class AnsiColors {
       # WriteVar $matchResults.Count
       foreach ($match in $matchResults) {
         foreach ($group in $match.Groups) {
+          Write-Host "$($regexColor.Key.GetGroupNames()) Group: $($group | Format-List | Out-String)"
           # $intersection = $this._segments | Where-Object {
           #     return $group.Index -lt ($_.startIndex + $_.matchedLength) -and ($group.Index + $group.Length) -gt $_.startIndex
           # }
@@ -201,10 +202,15 @@ class AnsiColors {
 
   [string]ColorizeText([string]$text, [System.Collections.Specialized.OrderedDictionary]$RegexColorMap) {
     $this._coloredText.Clear()
-    $lines = $text.Split("`r`n", [System.StringSplitOptions]::RemoveEmptyEntries)
+    $lines = $text.Split("`r`n")
     foreach ($line in $lines) {
-      $coloredLine = $this.ColorizeLine($line, $RegexColorMap)
-      $this._coloredText.Append( -Join @($coloredLine, "`r`n"))
+      if ($line.Length -eq 0) {
+        $this._coloredText.Append("`r`n")
+      }
+      else {
+        $coloredLine = $this.ColorizeLine($line, $RegexColorMap)
+        $this._coloredText.Append($coloredLine)
+      }
     }
         
 
@@ -219,76 +225,3 @@ function NewAnsiColors($palette) {
 Export-ModuleMember -Function NewAnsiColors
 Export-ModuleMember -Variable ColorPalette
 
-# function DisplayHelp($command) {
-#   $regexColorMap = [ordered]@{
-#     "^\bNAME|SYNTAX|PARAMETERS|ALIASES|REMARKS\b$" = "Crimson" # sections
-#     "<CommonParameters\>"                          = "Ebony"
-#     'https?:/\S+'                                  = 'Cornflower Blue'  # hyperlink
-#     '^\s+-\w+'                                     = "Dodger Blue"  # parameters
-#     '[{}|]'                                        = "Crimson"  # { }
-#     '[<>,\.]'                                      = "Gray"  # < >
-#     '[\[\]]'                                       = "Yellow"  # [ ]
-#     '[\(\)]'                                       = "Green"  # ( )
-#     '".*"'                                         = "Pale Green"  # "..."
-#   }
-
-#   $helpMsg = $(Get-Help $command -Detailed) | Out-String
-#   # $helpMsg = @"
-#   # -- To download and install Help files for the module that includes this cmdlet, use Update-Help.
-#   # "@
-#   # $helpMsg = "] -CNotIn ["
-#   # $helpMsg = "NAME`r`n  test"
-#   # $helpMsg = "    Where-Object [-Property] <string> [[-Value] <Object>] [-InputObject <psobject>] [-EQ]  [<CommonParameters>]"
-
-#   # $colorBuilder = New-Object -TypeName ColorBuilder
-#   $colorBuilder = [ColorBuilder]::new($ColorPalette)
-#   $coloredText = $colorBuilder.ColorText($helpMsg, $regexColorMap)
-#   Write-Host $coloredText
-# }
-
-# function mls() {
-#   # $regexColorMap = [ordered]@{
-#   #     # Directories
-#   #     "^\d{2}/\d{2}/\d{4} \d{2}:\d{2} [A|P]M +<DIR> +.*$"   = "Dodger Blue" # directories
-#   #     "^Directory of.*$"                                    = "Deep Sky Blue" # directory header
-
-#   #     # Files
-#   #     "^\d{2}/\d{2}/\d{4} \d{2}:\d{2} [A|P]M +\d+ +.*\..*$" = "Green" # files
-#   #     "^Mode +LastWriteTime +Length +Name"                  = "Yellow" # file header
-#   # }
-#   # $regexColorMap = [ordered]@{
-#   #     # Directories
-#   #     "^d.* +.{10} +.{8} +(.*?)$"          = "Steel Blue" # directories
-#   #     "^Directory of.*$"                   = "Deep Sky Blue" # directory header
-
-#   #     # Files
-#   #     "^-.{5} +.{10} +.{8} +(.*?)$"        = "Green" # files
-#   #     "^Mode +LastWriteTime +Length +Name" = "Yellow" # file header
-#   # } 
-#   $regexColorMap = [ordered]@{
-#     # Directories
-#     "^\d{2}/\d{2}/\d{4} \d{2}:\d{2} [A|P]M +<DIR> +(.*)$"   = "Dodger Blue" # directories
-#     "^Directory of.*$"                                      = "Deep Sky Blue" # directory header
-
-#     # Files
-#     "^\d{2}/\d{2}/\d{4} \d{2}:\d{2} [A|P]M +\d+ +(.*\..*)$" = "Green" # files
-#     "^Mode +(.*)$"                                          = "Crimson" # mode column
-#     "^LastWriteTime +(.*)$"                                 = "Yellow" # last write time column
-#     "^Length +(.*)$"                                        = "Indian Red" # length column
-#     "^Name$"                                                = "Ebony" # name column
-#   }
-#   $text = $(Get-ChildItem) | Out-String
-
-#   $colorBuilder = [ColorBuilder]::new($ColorPalette)
-#   $coloredText = $colorBuilder.ColorText($text, $regexColorMap)
-#   Write-Host $coloredText
-# }
-
-# function PrintColors() {
-#   $builder = [ColorBuilder]::new($ColorPalette)
-#   foreach ($item in $builder.colors.GetEnumerator()) {
-#     Write-Host $item.Key -NoNewline
-#     $text = -Join @("$([char]27)[38;2;", $item.Value, "m===")
-#     Write-Host " $text"
-#   }
-# }
