@@ -1,3 +1,5 @@
+. "class/ansi_color.ps1"
+
 $ColorPalette = [ordered]@{
   #Red
   "Indian Red"      = "205;92;92"
@@ -73,155 +75,16 @@ $ColorPalette = [ordered]@{
   "Black"           = "0;0;0"
 }
         
-class SegmentMatch {
-  [int32]$startIndex
-  [int32]$matchedLength
-  [string]$colorCode
+
+
+function NewAnsiColors($Palette) {
+  return [AnsiColors]::new($Palette)
 }
 
-class AnsiColors {
-  [System.Collections.Specialized.OrderedDictionary]$palette
-  [System.Collections.Generic.SortedList[int32, SegmentMatch]] $_segments
-  [Comparison[SegmentMatch]] $_startIndexSorter
-  [System.Text.StringBuilder] $_coloredLine
-  [System.Text.StringBuilder] $_coloredText
-
-  AnsiColors([System.Collections.Specialized.OrderedDictionary]$colorPalette) {
-    $this.palette = $colorPalette
-    $this._segments = [System.Collections.Generic.SortedList[int32, SegmentMatch]]::new()
-    $this._startIndexSorter = { $args[0].startIndex - $args[1].startIndex }
-    $this._coloredLine = [System.Text.StringBuilder]::new()
-    $this._coloredText = [System.Text.StringBuilder]::new()
-  }
-
-  [Boolean]_intersectsSegment($segments, $group) {
-    [int32]$left = 0
-    [int32]$right = $segments.Count - 1
-    [int32]$pivot = 0
-    # WriteVar $segments
-    # WriteVar $group
-    # Write-Host "$left $pivot $right ($right - gt $left)"
-    # return $this._segments.ContainsKey($group.Index)
-    for ($fullyTested = !($right -ge $left); !$fullyTested; ) {
-      $fullyTested = ($right - $left) -le 0 
-            
-      $pivot = $left + ($right - $left) / 2
-      # Write-Host "$left $pivot $right"
-      $colorMatch = $segments.Values[$pivot]
-      $updatedBounds = $false
-      if ($group.Index + $group.Length -lt $colorMatch.startIndex) {
-        $right = $pivot - 1
-        # Write-Host "Update right"
-        $updatedBounds = $true
-      }
-                   
-      if ($group.Index -gt ($colorMatch.startIndex + $colorMatch.matchedLength)) {
-        $left = $pivot + 1
-        # Write-Host "Update Left $left"
-        $updatedBounds = $true
-      }
-
-      if (!$updatedBounds) {
-        if ($group.Index -lt ($colorMatch.startIndex + $colorMatch.matchedLength) -and
-                ($group.Index + $group.Length) -gt $colorMatch.startIndex) {
-          return $true
-        }
-        if ($pivot -eq $left) {
-          $left += 1
-        }
-        else {
-          $right -= 1
-
-        }
-      }
-    }
-
-    return $false
-  } 
-
-  [string]ColorizeSegment([string]$segment, [string]$color) {
-    $code = $this.palette[$color]
-    return -Join @("$([char]27)[38;2;", $code, "m$segment") 
-  }
-
-  [string]ColorizeLine([string]$Line, [System.Collections.Specialized.OrderedDictionary]$RegexColorMap) {
-    $this._segments.Clear()
-    $currentIndex = 0
-     
-    # Match regexes
-    foreach ($regexColor in $RegexColorMap.GetEnumerator()) {
-      $matchResults = [regex]::Matches($line, $regexColor.Key)
-      # WriteVar $matchResults.Count
-      foreach ($match in $matchResults) {
-        foreach ($group in $match.Groups) {
-          Write-Host "$($regexColor.Key.GetGroupNames()) Group: $($group | Format-List | Out-String)"
-          # $intersection = $this._segments | Where-Object {
-          #     return $group.Index -lt ($_.startIndex + $_.matchedLength) -and ($group.Index + $group.Length) -gt $_.startIndex
-          # }
-          $intersection = $this._intersectsSegment($this._segments, $group)
-          if (!$intersection) {
-            $this._segments.Add($group.Index, [SegmentMatch]@{
-                startIndex    = $group.Index
-                matchedLength = $group.Length
-                colorCode     = $regexColor.Value
-              })
-          }
-        }
-      }
-    }
- 
-        
-    # Sort by index
-    $this._coloredLine.Clear()
-
-    # Compose the colored text
-    foreach ($segmentIt in $this._segments.GetEnumerator()) {
-      $segment = $segmentIt.Value
-      if ($segment.startIndex - $currentIndex -gt 0) {
-        $unmatchedText = $Line.Substring($currentIndex, $segment.startIndex - $currentIndex)
-        $coloredSegment = $this.ColorizeSegment($unmatchedText, "Light Gray") 
-        $this._coloredLine.Append($coloredSegment)
-      }
-        
-      $matchedText = $Line.Substring($segment.startIndex, $segment.matchedLength)
-      $coloredSegment = $this.ColorizeSegment($matchedText, $segment.colorCode) 
-      $this._coloredLine.Append($coloredSegment)
-        
-      $currentIndex = $segment.startIndex + $segment.matchedLength
-    }
-    
-    if ($currentIndex -lt $Line.Length) {
-      $unmatchedText = $Line.Substring($currentIndex)
-      $coloredSegment = $this.ColorizeSegment($unmatchedText, "Light Gray")
-
-      $this._coloredLine.Append($coloredSegment)
-    }
-
-    return $this._coloredLine.ToString()
-  }
-
-  [string]ColorizeText([string]$text, [System.Collections.Specialized.OrderedDictionary]$RegexColorMap) {
-    $this._coloredText.Clear()
-    $lines = $text.Split("`r`n")
-    foreach ($line in $lines) {
-      if ($line.Length -eq 0) {
-        $this._coloredText.Append("`r`n")
-      }
-      else {
-        $coloredLine = $this.ColorizeLine($line, $RegexColorMap)
-        $this._coloredText.Append($coloredLine)
-      }
-    }
-        
-
-    return $this._coloredText.ToString()
-  }
-}
-
-function NewAnsiColors($palette) {
-  return New-Object -TypeName AnsiColors -ArgumentList $palette
+function NewAnsiSpec([string]$Color, [string]$Style = "") {
+  return [AnsiSpec]::new("$Color", $Style)
 }
 
 Export-ModuleMember -Function NewAnsiColors
+Export-ModuleMember -Function NewAnsiSpec
 Export-ModuleMember -Variable ColorPalette
-
