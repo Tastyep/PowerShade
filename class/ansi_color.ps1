@@ -18,6 +18,10 @@ class AnsiSpec {
   }
 }
 
+function NewAnsiSpec([string]$Color, [string]$Style = "") {
+  return [AnsiSpec]::new("$Color", $Style)
+}
+
 class SegmentMatch {
   [int32]$startIndex
   [int32]$matchedLength
@@ -197,4 +201,8 @@ class AnsiStyle {
 
     return $this._coloredText.ToString()
   }
+}
+
+function NewAnsiStyle($Palette) {
+  return [AnsiStyle]::new($Palette)
 }
