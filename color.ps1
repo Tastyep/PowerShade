@@ -5,8 +5,8 @@ $ansiStyle = NewAnsiStyle($ColorPalette)
 function PrintColors() {
     foreach ($item in $ansiStyle.palette.GetEnumerator()) {
         Write-Host $item.Key -NoNewline
-        $text = -Join @('$([char]27)[38;2;', $item.Value, 'm===')
-        Write-Host ' $text'
+        $text = -Join @("$([char]27)[38;2;", $item.Value, 'm===')
+        Write-Host " $text"
     }
 }
 
@@ -32,17 +32,6 @@ $commandToColors = @{
     }
     'Write-Output'  = [ordered]@{
     }
-    #     $ColorPalette = @{
-    #     'd' = 'Deep Sky Blue'
-    #     'a' = 'Yellow'
-    #     'r' = 'Red'
-    #     'h' = 'Dark Gray'
-    #     's' = 'Green'
-    #     'l' = 'Gray'
-    #     'c' = 'Magenta'
-    #     'e' = 'Cyan'
-    #     'n' = 'Gray'
-    # }
 }
 
 function Color() {
@@ -53,23 +42,22 @@ function Color() {
         [Parameter(ValueFromRemainingArguments = $true)]
         $Params
     )
-    $commandInfo = $(Get-Command -Name $CommandName)
+    $commandInfo = $(Get-Command -Name $CommandName).Name
     $command = $commandInfo.Name
     if ($commandInfo.ResolvedCommand) {
         $command = $commandInfo.ResolvedCommand.Name
     }
 
-
-    # $proxy = [System.Management.Automation.ProxyCommand]::Create($command)
-    # $proxy.Invoke($Params)
-    $text = Invoke-Expression ($command + ' ' + $Params -join ' ') | Out-String
-    if ($commandToColors.ContainsKey($command)) {
-        $regexColorMap = $commandToColors[$command]
-        $coloredText = $ansiStyle.ColorizeText($text, $regexColorMap)
-        Write-Host $coloredText
+    if (!$commandToColors.ContainsKey($command)) {
+        Write-Host 'No color available for $command'
+        Invoke-Expression ($command + ' ' + $Params -join ' ') 
     }
     else {
-        Write-Host 'No color available for $command'
-        Write-Host $text
+        $regexStyleMap = $commandToColors[$command]
+        
+        Invoke-Expression ($command + ' ' + $Params -join ' ') | Out-String -Stream | ForEach-Object -Process {
+            $coloredLine = $ansiStyle.ColorizeLine($_, $regexStyleMap)
+            Write-Host $coloredLine
+        }
     }
 }
