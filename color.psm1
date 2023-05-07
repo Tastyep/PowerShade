@@ -77,14 +77,14 @@ $ColorPalette = [ordered]@{
         
 
 
-function NewAnsiColors($Palette) {
-  return [AnsiColors]::new($Palette)
+function NewAnsiStyle($Palette) {
+  return [AnsiStyle]::new($Palette)
 }
 
 function NewAnsiSpec([string]$Color, [string]$Style = "") {
   return [AnsiSpec]::new("$Color", $Style)
 }
 
-Export-ModuleMember -Function NewAnsiColors
+Export-ModuleMember -Function NewAnsiStyle
 Export-ModuleMember -Function NewAnsiSpec
 Export-ModuleMember -Variable ColorPalette

@@ -1,9 +1,9 @@
 Import-Module -Name '.\color.psm1'
 
-$ansiColors = NewAnsiColors($ColorPalette)
+$ansiStyle = NewAnsiStyle($ColorPalette)
 
 function PrintColors() {
-    foreach ($item in $ansiColors.palette.GetEnumerator()) {
+    foreach ($item in $ansiStyle.palette.GetEnumerator()) {
         Write-Host $item.Key -NoNewline
         $text = -Join @('$([char]27)[38;2;', $item.Value, 'm===')
         Write-Host ' $text'
@@ -65,7 +65,7 @@ function Color() {
     $text = Invoke-Expression ($command + ' ' + $Params -join ' ') | Out-String
     if ($commandToColors.ContainsKey($command)) {
         $regexColorMap = $commandToColors[$command]
-        $coloredText = $ansiColors.ColorizeText($text, $regexColorMap)
+        $coloredText = $ansiStyle.ColorizeText($text, $regexColorMap)
         Write-Host $coloredText
     }
     else {

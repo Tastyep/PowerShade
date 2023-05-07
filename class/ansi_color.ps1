@@ -30,7 +30,7 @@ class SegmentMatch {
   }
 }
 
-class AnsiColors {
+class AnsiStyle {
   [System.Collections.Specialized.OrderedDictionary]$palette
   [System.Collections.Generic.SortedList[int32, SegmentMatch]] $_segments
   [Comparison[SegmentMatch]] $_startIndexSorter
@@ -38,7 +38,7 @@ class AnsiColors {
   [System.Text.StringBuilder] $_coloredText
   [AnsiSpec] $_defaultSpec
 
-  AnsiColors([System.Collections.Specialized.OrderedDictionary]$colorPalette) {
+  AnsiStyle([System.Collections.Specialized.OrderedDictionary]$colorPalette) {
     $this.palette = $colorPalette
     $this._segments = [System.Collections.Generic.SortedList[int32, SegmentMatch]]::new()
     $this._startIndexSorter = { $args[0].startIndex - $args[1].startIndex }
