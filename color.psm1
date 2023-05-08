@@ -8,5 +8,6 @@ Export-ModuleMember -Function NewAnsiStyle
 Export-ModuleMember -Function NewAnsiSpec
 Export-ModuleMember -Function DisplayColors
 Export-ModuleMember -Function ColorCommand
+Export-ModuleMember -Function PrintColors
 Export-ModuleMember -Variable CommandToAnsiSpec
 Export-ModuleMember -Variable ColorPalette

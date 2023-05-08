@@ -29,6 +29,21 @@ $CommandToAnsiSpec = @{
     '^.{5}(l)'                                    = NewAnsiSpec('Orange') # Link
     '^.{5}(l).*\s+\b(.*)\b'                       = NewAnsiSpec('Orange')
   }
+  'Get-Location'  = [ordered]@{
+    '^Path'             = NewAnsiSpec -Color 'Crimson' # Header
+    '^C:'               = NewAnsiSpec -Color 'Deep Sky Blue'
+    '^D:'               = NewAnsiSpec -Color 'Sea Green'
+    '^E:'               = NewAnsiSpec -Color 'Gold'
+    '^F:'               = NewAnsiSpec -Color 'Violet'
+    '^G:'               = NewAnsiSpec -Color 'Crimson'
+    '^H:'               = NewAnsiSpec -Color 'Dark Goldenrod'
+    '^I:'               = NewAnsiSpec -Color 'Cornflower Blue'
+    '^J:'               = NewAnsiSpec -Color 'Spring Green'
+    '^K:'               = NewAnsiSpec -Color 'Tomato'
+    '^L:'               = NewAnsiSpec -Color 'Steel Blue'
+    '\\([^\\]+)(?<! )$' = NewAnsiSpec -Color 'Beige' -Style 'Underline'
+    '\\'                = NewAnsiSpec -Color 'Ebony'
+  }
   'Write-Output'  = [ordered]@{
   }
 }

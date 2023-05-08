@@ -19,7 +19,7 @@ function ColorCommand() {
   }
 
   if (!$CommandToSpec.ContainsKey($command)) {
-    Write-Host 'No color available for $command'
+    Write-Host "No color available for $command"
     Invoke-Expression ($command + ' ' + $Params -join ' ') 
   }
   else {
