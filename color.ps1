@@ -1,41 +1,44 @@
-Import-Module -Name '.\color.psm1'
+Import-Module -Name "$PSScriptRoot\PowerShade.psm1"
 
 $ansiStyle = NewAnsiStyle -Palette $ColorPalette
 
-function Get-ChildItemAlias() {
-    [CmdletBinding()]
-    param (
-        [Parameter(ValueFromRemainingArguments = $true)]
-        $Params
-    )
+function Get-ChildItemAlias()
+{
+  [CmdletBinding()]
+  param (
+    [Parameter(ValueFromRemainingArguments = $true)]
+    $Params
+  )
     
-    ColorCommand -AnsiStyle $ansiStyle -CommandToSpec $CommandToAnsiSpec -CommandName 'Get-ChildItem' @Params
+  ColorCommand -AnsiStyle $ansiStyle -CommandToSpec $CommandToAnsiSpec -CommandName 'Get-ChildItem' @Params
 }
 
 Remove-Item Alias:ls -ErrorAction SilentlyContinue
 New-Alias -Name ls -Value Get-ChildItemAlias
 
-function Get-HelpAlias() {
-    [CmdletBinding()]
-    param (
-        [Parameter(ValueFromRemainingArguments = $true)]
-        $Params
-    )
+function Get-HelpAlias()
+{
+  [CmdletBinding()]
+  param (
+    [Parameter(ValueFromRemainingArguments = $true)]
+    $Params
+  )
   
-    ColorCommand -AnsiStyle $ansiStyle -CommandToSpec $CommandToAnsiSpec -CommandName 'Get-Help' @Params
+  ColorCommand -AnsiStyle $ansiStyle -CommandToSpec $CommandToAnsiSpec -CommandName 'Get-Help' @Params
 }
 
 Remove-Item Alias:chelp -ErrorAction SilentlyContinue
 New-Alias -Name chelp -Value Get-HelpAlias
 
-function Get-LocationAlias() {
-    [CmdletBinding()]
-    param (
-        [Parameter(ValueFromRemainingArguments = $true)]
-        $Params
-    )
+function Get-LocationAlias()
+{
+  [CmdletBinding()]
+  param (
+    [Parameter(ValueFromRemainingArguments = $true)]
+    $Params
+  )
   
-    ColorCommand -AnsiStyle $ansiStyle -CommandToSpec $CommandToAnsiSpec -CommandName 'Get-Location' @Params
+  ColorCommand -AnsiStyle $ansiStyle -CommandToSpec $CommandToAnsiSpec -CommandName 'Get-Location' @Params
 }
 
 Remove-Item Alias:pwd -ErrorAction SilentlyContinue

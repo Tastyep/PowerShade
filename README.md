@@ -1,2 +1,3 @@
-# PsColor
-PsColor is a module that efficiently outputs colored text in PowerShell, enhancing readability and user experience.
+# PowerShade
+
+PowerShade is a PowerShell command-line module that adds color and syntax highlighting to improve the readability of code and command output.

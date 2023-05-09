@@ -1,5 +1,3 @@
-. "class/ansi_color.ps1"
-
 $CommandToAnsiSpec = @{
   'Get-Help'      = [ordered]@{
     '^\bNAME|SYNTAX|PARAMETERS|ALIASES|REMARKS|INPUTS|OUTPUTS\b$' = NewAnsiSpec('Crimson') # sections

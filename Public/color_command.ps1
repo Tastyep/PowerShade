@@ -1,6 +1,5 @@
-. "class/ansi_color.ps1"
-
-function ColorCommand() {
+function ColorCommand()
+{
   [CmdletBinding()]
   param(
     [Parameter(Mandatory = $true)]
@@ -14,15 +13,17 @@ function ColorCommand() {
   )
   $commandInfo = $(Get-Command -Name $CommandName)
   $command = $commandInfo.Name
-  if ($commandInfo.ResolvedCommand) {
+  if ($commandInfo.ResolvedCommand)
+  {
     $command = $commandInfo.ResolvedCommand.Name
   }
 
-  if (!$CommandToSpec.ContainsKey($command)) {
+  if (!$CommandToSpec.ContainsKey($command))
+  {
     Write-Host "No color available for $command"
     Invoke-Expression ($command + ' ' + $Params -join ' ') 
-  }
-  else {
+  } else
+  {
     $regexStyleMap = $CommandToSpec[$command]
         
     Invoke-Expression ($command + ' ' + $Params -join ' ') | Out-String -Stream | ForEach-Object -Process {
