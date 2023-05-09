@@ -23,6 +23,3 @@ if ($ErrorsFound.Count -gt 0)
   Write-Warning "Importing module $ModuleName failed. Fix errors before continuing."
   break
 }
-
-Export-ModuleMember -Function '*' -Alias '*'
-Export-ModuleMember -Variable '*'

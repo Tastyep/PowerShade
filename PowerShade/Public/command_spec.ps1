@@ -44,3 +44,4 @@ $CommandToAnsiSpec = @{
   'Write-Output'  = [ordered]@{
   }
 }
+

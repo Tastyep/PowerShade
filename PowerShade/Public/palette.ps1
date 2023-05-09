@@ -72,3 +72,10 @@ $ColorPalette = [ordered]@{
   "Jet"             = "52;52;52"
   "Black"           = "0;0;0"
 }
+
+New-Variable -Name ColorPalette -Value $ColorPalette -Option Constant -Scope Private -Force -ErrorAction SilentlyContinue
+
+function Get-PowerShadePalette()
+{
+  return $ColorPalette
+}

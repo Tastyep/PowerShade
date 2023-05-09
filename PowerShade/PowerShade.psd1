@@ -69,13 +69,23 @@
   # NestedModules = @()
 
   # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
-  FunctionsToExport = @('PrintColors', 'ColorCommand', 'NewAnsiSpec', 'NewAnsiStyle')
+  FunctionsToExport = @(
+    'Get-ChildItemAlias',
+    'Get-HelpAlias', 
+    'Get-LocationAlias',
+    'Get-PowerShadePalette',
+    'Add-PowerShadeAliases',
+    'PrintColors',
+    'ColorCommand',
+    'NewAnsiSpec',
+    'NewAnsiStyle'
+  )
 
   # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
   CmdletsToExport = @()
 
   # Variables to export from this module
-  VariablesToExport = '*'
+  VariablesToExport = @('ColorPalette', 'CommandToAnsiSpec')
 
   # Aliases to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no aliases to export.
   AliasesToExport = @()
