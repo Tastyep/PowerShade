@@ -1,4 +1,4 @@
-Import-Module -Name "$PSScriptRoot\PowerShade.psm1"
+Import-Module -Name "$PSScriptRoot\PowerShade"
 
 $ansiStyle = NewAnsiStyle -Palette $ColorPalette
 
