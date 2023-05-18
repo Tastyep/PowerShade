@@ -1,4 +1,4 @@
-function PrintColors([System.Collections.Specialized.OrderedDictionary]$Palette)
+function Show-ColorPalette([System.Collections.Specialized.OrderedDictionary]$Palette)
 {
   foreach ($item in $Palette.GetEnumerator())
   {

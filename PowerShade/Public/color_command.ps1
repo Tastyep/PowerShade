@@ -1,9 +1,9 @@
-function ColorCommand()
+function Add-PowerShadeStyle()
 {
   [CmdletBinding()]
   param(
     [Parameter(Mandatory = $true)]
-    $AnsiStyle,
+    $AnsiStyler,
     [Parameter(Mandatory = $true)]
     [hashtable]$CommandToSpec,
     [Parameter(Mandatory = $true)]
@@ -27,7 +27,7 @@ function ColorCommand()
     $regexStyleMap = $CommandToSpec[$command]
         
     Invoke-Expression ($command + ' ' + $Params -join ' ') | Out-String -Stream | ForEach-Object -Process {
-      $coloredLine = $AnsiStyle.ColorizeLine($_, $regexStyleMap)
+      $coloredLine = $AnsiStyler.ColorizeLine($_, $regexStyleMap)
       Write-Host $coloredLine
     }
   }

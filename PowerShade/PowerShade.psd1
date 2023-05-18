@@ -70,22 +70,25 @@
 
   # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
   FunctionsToExport = @(
+    'New-AnsiSpec',
+    'New-AnsiStyler',
+    'Add-PowerShadeStyle',
+    'Set-PowerShadeAliases',
+   
+    'Get-PowerShadeBuiltinSpec',
+    'Get-PowerShadePalette',
+    'Show-ColorPalette',
+    
     'Get-ChildItemAlias',
     'Get-HelpAlias', 
-    'Get-LocationAlias',
-    'Get-PowerShadePalette',
-    'Add-PowerShadeAliases',
-    'PrintColors',
-    'ColorCommand',
-    'NewAnsiSpec',
-    'NewAnsiStyle'
+    'Get-LocationAlias'
   )
 
   # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
   CmdletsToExport = @()
 
   # Variables to export from this module
-  VariablesToExport = @('ColorPalette', 'CommandToAnsiSpec')
+  VariablesToExport = @()
 
   # Aliases to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no aliases to export.
   AliasesToExport = @()

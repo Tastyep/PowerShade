@@ -23,7 +23,7 @@ class AnsiSpec
   }
 }
 
-function NewAnsiSpec([string]$Color, [string]$Style = "")
+function New-AnsiSpec([string]$Color, [string]$Style = "")
 {
   return [AnsiSpec]::new("$Color", $Style)
 }
@@ -42,7 +42,7 @@ class SegmentMatch
   }
 }
 
-class AnsiStyle
+class AnsiStyler
 {
   [System.Collections.Specialized.OrderedDictionary]$palette
   [System.Collections.Generic.SortedList[int32, SegmentMatch]] $_segments
@@ -51,7 +51,7 @@ class AnsiStyle
   [System.Text.StringBuilder] $_coloredText
   [AnsiSpec] $_defaultSpec
 
-  AnsiStyle([System.Collections.Specialized.OrderedDictionary]$colorPalette)
+  AnsiStyler([System.Collections.Specialized.OrderedDictionary]$colorPalette)
   {
     $this.palette = $colorPalette
     $this._segments = [System.Collections.Generic.SortedList[int32, SegmentMatch]]::new()
@@ -245,7 +245,7 @@ class AnsiStyle
   }
 }
 
-function NewAnsiStyle($Palette)
+function New-AnsiStyler($Palette)
 {
-  return [AnsiStyle]::new($Palette)
+  return [AnsiStyler]::new($Palette)
 }

@@ -1,4 +1,5 @@
-$script:ansiStyle = $null
+$script:ansiStyler = $null
+$script:commandSpec = $null
 
 function Get-ChildItemAlias()
 {
@@ -8,7 +9,7 @@ function Get-ChildItemAlias()
     $Params
   )
 
-  ColorCommand -AnsiStyle $script:ansiStyle -CommandToSpec $CommandToAnsiSpec -CommandName 'Get-ChildItem' @Params
+  Add-PowerShadeStyle -AnsiStyler $ansiStyler -CommandToSpec $commandSpec -CommandName 'Get-ChildItem' @Params
 }
 #   
 function Get-HelpAlias()
@@ -19,7 +20,7 @@ function Get-HelpAlias()
     $Params
   )
   
-  ColorCommand -AnsiStyle $script:ansiStyle -CommandToSpec $CommandToAnsiSpec -CommandName 'Get-Help' @Params
+  Add-PowerShadeStyle -AnsiStyler $ansiStyler -CommandToSpec $commandSpec -CommandName 'Get-Help' @Params
 }
 
 function Get-LocationAlias()
@@ -30,13 +31,14 @@ function Get-LocationAlias()
     $Params
   )
   
-  ColorCommand -AnsiStyle $script:ansiStyle -CommandToSpec $CommandToAnsiSpec -CommandName 'Get-Location' @Params
+  Add-PowerShadeStyle -AnsiStyler $ansiStyler -CommandToSpec $commandSpec -CommandName 'Get-Location' @Params
 }
 
-
-function Add-PowerShadeAliases()
+function Set-PowerShadeAliases()
 {
-  $script:ansiStyle = NewAnsiStyle -Palette $ColorPalette
+  $colorPalette = Get-PowerShadePalette
+  $script:ansiStyler = New-AnsiStyler -Palette $ColorPalette
+  $script:commandSpec = Get-PowerShadeBuiltinSpec
 
   Set-Alias -Name ls -Value Get-ChildItemAlias -Scope Global
   Set-Alias -Name chelp -Value Get-HelpAlias -Scope Global
