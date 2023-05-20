@@ -11,7 +11,7 @@ function Get-ChildItemAlias()
 
   Add-PowerShadeStyle -AnsiStyler $ansiStyler -CommandToSpec $commandSpec -CommandName 'Get-ChildItem' @Params
 }
-#   
+
 function Get-HelpAlias()
 {
   [CmdletBinding()]

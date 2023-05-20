@@ -10,7 +10,9 @@ function Add-PowerShadeStyle()
     [string]$CommandName,
     [Parameter(ValueFromRemainingArguments = $true)]
     $Params,
-    [int]$BufferSize = 20
+
+    [int]$BufferSize = 20,
+    [switch]$StderrToStdout
   )
 
   $commandInfo = $(Get-Command -Name $CommandName)
@@ -26,10 +28,16 @@ function Add-PowerShadeStyle()
     Invoke-Expression ($command + ' ' + $Params -join ' ') 
   } else
   {
+    $fullCmd = $command + ' ' + $Params -join ' '
+    if ($StderrToStdout)
+    {
+      $fullCmd += ' 2>&1'
+    }
+
     $regexStyleMap = $CommandToSpec[$command]
     $lines = [System.Text.StringBuilder]::new()
     $lineCount = 0
-    Invoke-Expression ($command + ' ' + $Params -join ' ') | Out-String -Stream | ForEach-Object -Process {
+    Invoke-Expression ($fullCmd) | Out-String -Stream | ForEach-Object -Process {
       $coloredLine = $AnsiStyler.ColorizeLine($_, $regexStyleMap)
       
       [void]($lines.Append($coloredLine))
