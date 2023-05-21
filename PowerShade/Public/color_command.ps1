@@ -24,7 +24,7 @@ function Add-PowerShadeStyle()
 
   if (!$CommandToSpec.ContainsKey($command))
   {
-    Write-Host "No color available for $command"
+    Write-Output "No color available for $command"
     Invoke-Expression ($command + ' ' + $Params -join ' ') 
   } else
   {
@@ -55,6 +55,6 @@ function Add-PowerShadeStyle()
   }
   if ($lineCount -gt 0)
   {
-    Write-Host $lines.ToString()
+    Write-Output $lines.ToString()
   }
 }

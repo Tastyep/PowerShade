@@ -73,20 +73,20 @@ class AnsiStyler
       $fullyTested = ($right - $left) -le 0 
             
       $pivot = $left + ($right - $left) / 2
-      # Write-Host "$left $pivot $right"
+      # Write-Output "$left $pivot $right"
       $colorMatch = $segments.Values[$pivot]
       $updatedBounds = $false
       if ($capture.Index + $capture.Length -lt $colorMatch.startIndex)
       {
         $right = $pivot - 1
-        # Write-Host "Update right"
+        # Write-Output "Update right"
         $updatedBounds = $true
       }
                    
       if ($capture.Index -gt ($colorMatch.startIndex + $colorMatch.matchedLength))
       {
         $left = $pivot + 1
-        # Write-Host "Update Left $left"
+        # Write-Output "Update Left $left"
         $updatedBounds = $true
       }
 
@@ -131,7 +131,7 @@ class AnsiStyler
       }
       default
       {
-        Write-Host "Unknown style: '$($spec.style)'"
+        Write-Output "Unknown style: '$($spec.style)'"
       }
     }
     $styles.Append("$esc[38;2;$($code)m")
@@ -151,7 +151,7 @@ class AnsiStyler
       }
       default
       {
-        Write-Host "Unknown style: '$($spec.style)'"
+        Write-Output "Unknown style: '$($spec.style)'"
       }
     }
     return $styles.ToString()
@@ -168,7 +168,7 @@ class AnsiStyler
       $matchResults = [regex]::Matches($line, $regexStyleIt.Key)
       foreach ($match in $matchResults)
       {
-        # Write-Host " === Match ==="
+        # Write-Output " === Match ==="
         $i = 0;
         if ($match.Groups.Count -gt 1)
         {
@@ -177,8 +177,8 @@ class AnsiStyler
         for (; $i -lt $match.Groups.Count; $i += 1)
         {
           $group = $match.Groups[$i]
-          # Write-Host "$($regexColor.Key) Group: $($group | Format-List | Out-String)"
-          # Write-Host "$($regexColor.Key) Captures: $($group.Captures | Format-List | Out-String)"
+          # Write-Output "$($regexColor.Key) Group: $($group | Format-List | Out-String)"
+          # Write-Output "$($regexColor.Key) Captures: $($group.Captures | Format-List | Out-String)"
           $intersection = $this._intersectsSegment($this._segments, $group)
           if (!$intersection)
           {
