@@ -3,7 +3,7 @@ function Add-PowerShadeStyle()
   [CmdletBinding()]
   param(
     [Parameter(Mandatory = $true, Position = 0)]
-    $AnsiStyler,
+    $Styler,
     [Parameter(Mandatory = $true, Position = 1)]
     [hashtable]$CommandToSpec,
     [Parameter(Mandatory = $true, Position = 2)]
@@ -38,7 +38,7 @@ function Add-PowerShadeStyle()
     $lines = [System.Text.StringBuilder]::new()
     $lineCount = 0
     Invoke-Expression ($fullCmd) | Out-String -Stream | ForEach-Object -Process {
-      $coloredLine = $AnsiStyler.ColorizeLine($_, $regexStyleMap)
+      $coloredLine = $Styler.ColorizeLine($_, $regexStyleMap)
       
       [void]($lines.Append($coloredLine))
       $lineCount += 1

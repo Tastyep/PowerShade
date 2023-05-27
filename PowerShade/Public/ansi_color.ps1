@@ -23,8 +23,13 @@ class AnsiSpec
   }
 }
 
-function New-AnsiSpec([string]$Color, [string]$Style = "")
+function New-PowerShadeSpec()
 {
+  param (
+    [string]$Color,
+    [string]$Style
+  )
+
   return [AnsiSpec]::new("$Color", $Style)
 }
 
@@ -245,7 +250,7 @@ class AnsiStyler
   }
 }
 
-function New-AnsiStyler($Palette)
+function New-PowerShadeStyler($Palette)
 {
   return [AnsiStyler]::new($Palette)
 }
