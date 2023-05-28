@@ -8,6 +8,7 @@ $ColorPalette = [ordered]@{
   "Dark Red"        = "139;0;0"
 
   # Blue
+  "Perennial Blue" = "164;187;211"
   "Deep Sky Blue"   = "0;191;255"
   "Cornflower Blue" = "100;149;237"
   "Dodger Blue"     = "30;144;255"
