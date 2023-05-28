@@ -72,44 +72,40 @@ class AnsiStyler
     [int32]$left = 0
     [int32]$right = $segments.Count - 1
     [int32]$pivot = 0
-    
+   
+    # Write-Host "$($capture | Out-String) $($segments | Out-String)"
     for ($fullyTested = !($right -ge $left); !$fullyTested; )
     {
       $fullyTested = ($right - $left) -le 0 
             
       $pivot = $left + ($right - $left) / 2
       # Write-Output "$left $pivot $right"
-      $colorMatch = $segments.Values[$pivot]
+      $segment = $segments.Values[$pivot]
+      # Write-Host "$($segment | Out-String)"
       $updatedBounds = $false
-      if ($capture.Index + $capture.Length -lt $colorMatch.startIndex)
+      $captureEndIndex = $capture.Index + $capture.Length - 1
+      if ($captureEndIndex -lt $segment.startIndex)
       {
         $right = $pivot - 1
-        # Write-Output "Update right"
+        # Write-Host "Update right"
         $updatedBounds = $true
       }
-                   
-      if ($capture.Index -gt ($colorMatch.startIndex + $colorMatch.matchedLength))
+                  
+      $segmentEndIndex = $segment.startIndex + $segment.matchedLength - 1
+      if ($capture.Index -gt $segmentEndIndex)
       {
         $left = $pivot + 1
-        # Write-Output "Update Left $left"
+        # Write-Host "Update Left $left"
         $updatedBounds = $true
       }
 
       if (!$updatedBounds)
       {
-        if ($capture.Index -lt ($colorMatch.startIndex + $colorMatch.matchedLength) -and
-                ($capture.Index + $capture.Length) -gt $colorMatch.startIndex)
+        if ($capture.Index -le $segmentEndIndex -and $captureEndIndex -ge $segment.startIndex)
         {
           return $true
         }
-        if ($pivot -eq $left)
-        {
-          $left += 1
-        } else
-        {
-          $right -= 1
-
-        }
+        break
       }
     }
 
