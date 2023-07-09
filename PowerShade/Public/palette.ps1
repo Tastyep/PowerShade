@@ -1,4 +1,4 @@
-$ColorPalette = [ordered]@{
+﻿$ColorPalette = [ordered]@{
   #Red
   "Indian Red"      = "205;92;92"
   "Tomato"          = "255;99;71"
@@ -34,33 +34,33 @@ $ColorPalette = [ordered]@{
   "Yellow"          = "255;255;0"
   "Gold"            = "255;215;0"
   "Dark Goldenrod"  = "184;134;11"
-    
+
   # Brown
   "Tan"             = "210;180;140"
   "Brown"           = "165;42;42"
   "Saddle Brown"    = "139;69;19"
   "Maroon"          = "128;0;0"
   "Dark Brown"      = "101;67;33"
-    
+
   # Purple
   "Lavender"        = "230;230;250"
   "Violet"          = "238;130;238"
   "Purple"          = "128;0;128"
   "Dark Purple"     = "128;0;128"
   "Indigo"          = "75;0;130"
-    
+
   # Pink
   "Pink"            = "255;192;203"
   "Light Pink"      = "255;182;193"
   "Hot Pink"        = "255;105;180"
   "Deep Pink"       = "255;20;147"
-    
+
   # Orange
   "Peach"           = "255;218;185"
   "Orange"          = "255;165;0"
   "Dark Orange"     = "255;140;0"
   "Coral"           = "255;127;80"
-   
+
   # White - Black
   "White"           = "255;255;255"
   "Ivory"           = "255;255;240"

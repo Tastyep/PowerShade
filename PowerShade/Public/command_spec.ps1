@@ -27,17 +27,11 @@ $commandToAnsiSpec = @{
     '^.(a)'                                        = New-PowerShadeSpec -Color 'Khaki' # Archive
     "^.(a).*$gciFilenamePattern"                   = New-PowerShadeSpec -Color 'Khaki'
     '^.{2}(r)'                                     = New-PowerShadeSpec -Color 'Lime Green' # Read-Only
-    "^.
-    {2
-    }(r).*$gciFilenamePattern"                = New-PowerShadeSpec -Color 'Lime Green'
+    "^.{2}(r).*$gciFilenamePattern"                = New-PowerShadeSpec -Color 'Lime Green'
     '^.{3}(h)'                                     = New-PowerShadeSpec -Color 'Dark Gray' # Hidden
-    "^.
-    {3
-    }(h).*$gciFilenamePattern"                = New-PowerShadeSpec -Color 'Dark Gray'
+    "^.{3}(h).*$gciFilenamePattern"                = New-PowerShadeSpec -Color 'Dark Gray'
     '^.{4}(s)'                                     = New-PowerShadeSpec -Color 'Red' # System
-    "^.
-    {4
-    }(s).*$gciFilenamePattern"                = New-PowerShadeSpec -Color 'Red'
+    "^.{4}(s).*$gciFilenamePattern"                = New-PowerShadeSpec -Color 'Red'
   }
   'Get-Location'  = [ordered]@{
     '^Path'             = New-PowerShadeSpec -Color 'Crimson' # Header
@@ -53,8 +47,6 @@ $commandToAnsiSpec = @{
     '^L:'               = New-PowerShadeSpec -Color 'Steel Blue'
     '\\([^\\]+)(?<! )$' = New-PowerShadeSpec -Color 'Beige' -Style 'Underline'
     '\\'                = New-PowerShadeSpec -Color 'Ebony'
-  }
-  'Write-Output'  = [ordered]@{
   }
 }
 

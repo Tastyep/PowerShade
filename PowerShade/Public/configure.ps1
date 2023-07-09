@@ -1,41 +1,25 @@
-$script:ansiStyler = $null
+﻿$script:ansiStyler = $null
 $script:commandSpec = $null
 
 function Get-ChildItemAlias()
 {
-  [CmdletBinding()]
-  param (
-    [Parameter(ValueFromRemainingArguments = $true)]
-    $Params
-  )
-
-  Add-PowerShadeStyle -Styler $ansiStyler -CommandToSpec $commandSpec -CommandName 'Get-ChildItem' @Params
+  Get-ChildItem @args | Out-String -Stream | ConvertTo-ShadedString -Styler $ansiStyler -RegexToStyles $commandSpec['Get-ChildItem'] 
 }
 
 function Get-HelpAlias()
 {
-  [CmdletBinding()]
-  param (
-    [Parameter(ValueFromRemainingArguments = $true)]
-    $Params
-  )
-  
-  Add-PowerShadeStyle -Styler $ansiStyler -CommandToSpec $commandSpec -CommandName 'Get-Help' @Params
+  Get-Help @args | Out-String -Stream | ConvertTo-ShadedString -Styler $ansiStyler -RegexToStyles $commandSpec['Get-Help']
 }
 
 function Get-LocationAlias()
 {
-  [CmdletBinding()]
-  param (
-    [Parameter(ValueFromRemainingArguments = $true)]
-    $Params
-  )
-  
-  Add-PowerShadeStyle -Styler $ansiStyler -CommandToSpec $commandSpec -CommandName 'Get-Location' @Params
+  Get-Location @args | ConvertTo-ShadedString -Styler $ansiStyler -RegexToStyles $commandSpec['Get-Location']
 }
 
-function Set-PowerShadeAliases()
+function Set-PowerShadeAliasList()
 {
+  [CmdletBinding(SupportsShouldProcess = $true)]
+  param()
   $colorPalette = Get-PowerShadePalette
   $script:ansiStyler = New-PowerShadeStyler -Palette $ColorPalette
   $script:commandSpec = Get-PowerShadeBuiltinSpec

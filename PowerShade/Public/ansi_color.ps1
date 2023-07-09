@@ -1,4 +1,4 @@
-class AnsiSpec
+﻿class AnsiSpec
 {
   [string]$color
   [string]$style
@@ -72,12 +72,12 @@ class AnsiStyler
     [int32]$left = 0
     [int32]$right = $segments.Count - 1
     [int32]$pivot = 0
-   
+
     # Write-Host "$($capture | Out-String) $($segments | Out-String)"
     for ($fullyTested = !($right -ge $left); !$fullyTested; )
     {
-      $fullyTested = ($right - $left) -le 0 
-            
+      $fullyTested = ($right - $left) -le 0
+
       $pivot = $left + ($right - $left) / 2
       # Write-Output "$left $pivot $right"
       $segment = $segments.Values[$pivot]
@@ -90,7 +90,7 @@ class AnsiStyler
         # Write-Host "Update right"
         $updatedBounds = $true
       }
-                  
+
       $segmentEndIndex = $segment.startIndex + $segment.matchedLength - 1
       if ($capture.Index -gt $segmentEndIndex)
       {
@@ -110,7 +110,7 @@ class AnsiStyler
     }
 
     return $false
-  } 
+  }
 
   [string]ColorizeSegment([string]$segment, [AnsiSpec]$spec)
   {
@@ -162,7 +162,7 @@ class AnsiStyler
   {
     $this._segments.Clear()
     $currentIndex = 0
-     
+
     # Match regexes
     foreach ($regexStyleIt in $RegexStyleMap.GetEnumerator())
     {
@@ -192,7 +192,7 @@ class AnsiStyler
         }
       }
     }
-        
+
     # Sort by index
     $this._coloredLine.Clear()
 
@@ -203,17 +203,17 @@ class AnsiStyler
       if ($segment.startIndex - $currentIndex -gt 0)
       {
         $unmatchedText = $Line.Substring($currentIndex, $segment.startIndex - $currentIndex)
-        $coloredSegment = $this.ColorizeSegment($unmatchedText, $this._defaultSpec) 
+        $coloredSegment = $this.ColorizeSegment($unmatchedText, $this._defaultSpec)
         $this._coloredLine.Append($coloredSegment)
       }
-        
+
       $matchedText = $Line.Substring($segment.startIndex, $segment.matchedLength)
-      $coloredSegment = $this.ColorizeSegment($matchedText, $segment.spec) 
+      $coloredSegment = $this.ColorizeSegment($matchedText, $segment.spec)
       $this._coloredLine.Append($coloredSegment)
-        
+
       $currentIndex = $segment.startIndex + $segment.matchedLength
     }
-    
+
     if ($currentIndex -lt $Line.Length)
     {
       $unmatchedText = $Line.Substring($currentIndex)
@@ -240,13 +240,17 @@ class AnsiStyler
         $this._coloredText.Append($coloredLine)
       }
     }
-        
+
 
     return $this._coloredText.ToString()
   }
 }
 
-function New-PowerShadeStyler($Palette)
+function New-PowerShadeStyler()
 {
+  [CmdletBinding(SupportsShouldProcess = $true)]
+  param (
+    $Palette
+  )
   return [AnsiStyler]::new($Palette)
 }
